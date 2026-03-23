@@ -6,25 +6,61 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:firebase_core/firebase_core.dart';
 import 'package:myapp/main.dart';
 
+// Mock Firebase Core
+void setupFirebaseCoreMocks() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+  
+  // Mock the MethodChannel for Firebase Core
+  const MethodChannel channel = MethodChannel('plugins.flutter.io/firebase_core');
+
+  TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+      .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+    if (methodCall.method == 'Firebase#initializeCore') {
+      return [
+        {
+          'name': '[DEFAULT]',
+          'options': {
+            'apiKey': 'mock_apiKey',
+            'appId': 'mock_appId',
+            'messagingSenderId': 'mock_messagingSenderId',
+            'projectId': 'mock_projectId',
+          },
+          'pluginConstants': {},
+        }
+      ];
+    }
+    if (methodCall.method == 'Firebase#initializeApp') {
+      return {
+        'name': methodCall.arguments['appName'],
+        'options': methodCall.arguments['options'],
+        'pluginConstants': {},
+      };
+    }
+    return null;
+  });
+}
+
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  // Set up the mock for Firebase Core before tests run
+  setUpAll(() async {
+    setupFirebaseCoreMocks();
+    await Firebase.initializeApp();
+  });
+
+  testWidgets('Login screen UI test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that the login screen widgets are displayed.
+    expect(find.text('Splitzy Login'), findsOneWidget);
+    expect(find.text('Email'), findsOneWidget);
+    expect(find.text('Password'), findsOneWidget);
+    expect(find.widgetWithText(ElevatedButton, 'Log In'), findsOneWidget);
+    expect(find.widgetWithText(TextButton, 'Create an Account'), findsOneWidget);
   });
 }

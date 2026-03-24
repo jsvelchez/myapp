@@ -179,16 +179,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                   text: _isSignUp
                                       ? 'Already have an account? '
                                       : "Don't have an account? ",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.grey[600],
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 TextSpan(
                                     text: _isSignUp ? 'Sign In' : 'Sign Up',
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.bold)),
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor)),
                               ],
                             ),
                             textAlign: TextAlign.center,

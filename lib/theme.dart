@@ -15,7 +15,7 @@ final ThemeData appTheme = ThemeData(
     secondary: lightMint, // Use Light Mint as secondary
   ),
   scaffoldBackgroundColor: softCream,
-  textTheme: GoogleFonts.urbanistTextTheme(
+  textTheme: GoogleFonts.plusJakartaSansTextTheme(
     ThemeData.light().textTheme,
   ).copyWith(
     // For large headlines like "Welcome to Splitzy!"
@@ -39,7 +39,7 @@ final ThemeData appTheme = ThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      textStyle: GoogleFonts.urbanist(
+      textStyle: GoogleFonts.plusJakartaSans(
         fontSize: 18,
         fontWeight: FontWeight.bold,
       ),
@@ -48,7 +48,7 @@ final ThemeData appTheme = ThemeData(
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       foregroundColor: primaryAction,
-      textStyle: GoogleFonts.urbanist(
+      textStyle: GoogleFonts.plusJakartaSans(
         fontWeight: FontWeight.bold,
         fontSize: 16,
       ),

@@ -23,11 +23,13 @@ final ThemeData appTheme = ThemeData(
     // For smaller headlines like "Forgot Password?"
     headlineSmall: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: darkSlate),
      // For subtitles
-    titleMedium: TextStyle(fontSize: 16, color: darkSlate.withOpacity(0.7)),
+    titleMedium: TextStyle(fontSize: 16, color: darkSlate.withAlpha(178)),
     // For button text
     labelLarge: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
     // For regular body text
-    bodyMedium: TextStyle(fontSize: 14, color: darkSlate.withOpacity(0.8)),
+    bodyMedium: TextStyle(fontSize: 14, color: darkSlate.withAlpha(204)),
+    // For small body text
+    bodySmall: TextStyle(fontSize: 12, color: Colors.grey[600]),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -60,6 +62,6 @@ final ThemeData appTheme = ThemeData(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: primaryAction),
     ),
-    labelStyle: TextStyle(color: darkSlate.withOpacity(0.6)),
+    labelStyle: TextStyle(color: darkSlate.withAlpha(153)),
   ),
 );

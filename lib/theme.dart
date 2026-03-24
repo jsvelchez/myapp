@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color primaryColor = Color(0xFF14B8A6);
-const Color accentColor = Color(0xFFF43F5E);
 
 final ThemeData appTheme = ThemeData(
   primaryColor: primaryColor,
-  colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+  // Use `brightness: Brightness.light` to ensure consistency.
+  colorScheme: ColorScheme.fromSeed(seedColor: primaryColor, brightness: Brightness.light),
   scaffoldBackgroundColor: Colors.white,
-  textTheme: GoogleFonts.interTextTheme(
+  textTheme: GoogleFonts.urbanistTextTheme(
     ThemeData.light().textTheme,
   ).copyWith(
-    displayLarge: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
+    // For large headlines like "Welcome to Splitzy!"
+    headlineLarge: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Colors.black),
+    // For smaller headlines like "Forgot Password?"
     headlineSmall: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
-    titleLarge: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-    bodyLarge: const TextStyle(fontSize: 16, color: Colors.black87),
+     // For subtitles
+    titleMedium: TextStyle(fontSize: 16, color: Colors.grey[700]),
+    // For button text
+    labelLarge: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    // For regular body text
     bodyMedium: TextStyle(fontSize: 14, color: Colors.grey[600]),
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -25,29 +30,29 @@ final ThemeData appTheme = ThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      textStyle: GoogleFonts.urbanist(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      foregroundColor: primaryColor,
+      textStyle: GoogleFonts.urbanist(
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+      ),
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide(color: Colors.grey.shade300),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: primaryColor, width: 2),
+      borderSide: const BorderSide(color: primaryColor),
     ),
     labelStyle: TextStyle(color: Colors.grey[600]),
   ),
-  appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    iconTheme: IconThemeData(color: Colors.black),
-    titleTextStyle: TextStyle(
-      color: Colors.black,
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-    ),
-  ),
-  visualDensity: VisualDensity.adaptivePlatformDensity,
 );

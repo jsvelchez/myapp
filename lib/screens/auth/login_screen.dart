@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myapp/screens/auth/forgot_password_screen.dart';
-import 'signup_screen.dart';
+import 'package:myapp/screens/auth/signup_screen.dart';
 
 // Placeholder for the home screen to avoid import errors
 class HomeScreen extends StatelessWidget {
@@ -11,10 +11,9 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
-        backgroundColor: Color(0xFF14B8A6),
+        title: const Text('Home'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Welcome! You are logged in.'),
       ),
     );
@@ -72,52 +71,44 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 80),
+              const SizedBox(height: 80),
               Text(
                 'Welcome to Splitzy!',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
+                style: textTheme.headlineLarge,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text(
-                'Track now. Argue less.',
+                "Track now. Argue less.",
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
+                style: textTheme.titleMedium,
               ),
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email Address',
                   prefixIcon: Icon(Icons.email_outlined),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: _passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock_outline),
+                  prefixIcon: const Icon(Icons.lock_outline),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscurePassword ? Icons.visibility_off_outlined : Icons.visibility_outlined,
@@ -128,12 +119,9 @@ class LoginScreenState extends State<LoginScreen> {
                       });
                     },
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
@@ -143,10 +131,7 @@ class LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
                     );
                   },
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: Color(0xFF14B8A6)),
-                  ),
+                  child: const Text('Forgot Password?'),
                 ),
               ),
               if (_error != null)
@@ -154,32 +139,22 @@ class LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
                     _error!,
-                    style: TextStyle(color: Colors.red, fontSize: 14),
+                    style: textTheme.bodyMedium?.copyWith(color: colorScheme.error),
                     textAlign: TextAlign.center,
                   ),
                 ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF14B8A6),
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
                 onPressed: _loading ? null : _login,
                 child: _loading
-                    ? CircularProgressIndicator(color: Colors.white)
-                    : Text(
-                        'Sign In',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text('Sign In'),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("New to Splitzy? "),
+                  Text("New to Splitzy? ", style: textTheme.bodyMedium),
                   TextButton(
                     onPressed: () {
                       Navigator.push(
@@ -187,19 +162,7 @@ class LoginScreenState extends State<LoginScreen> {
                         MaterialPageRoute(builder: (_) => const SignUpScreen()),
                       );
                     },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size(50, 30),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      alignment: Alignment.center,
-                    ),
-                    child: Text(
-                      'Create an Account',
-                      style: TextStyle(
-                        color: Color(0xFF14B8A6),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: const Text('Create an Account'),
                   ),
                 ],
               ),

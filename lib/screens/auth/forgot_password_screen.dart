@@ -47,8 +47,6 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       body: SafeArea(
@@ -61,13 +59,13 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               Text(
                 'Forgot Password?',
                 textAlign: TextAlign.center,
-                style: textTheme.headlineLarge,
+                style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(height: 16),
               Text(
                 "Don't worry, it happens. Just enter your email below to receive a password reset link.",
                 textAlign: TextAlign.center,
-                style: textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 30),
               TextField(
@@ -84,11 +82,11 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.error_outline, color: colorScheme.error, size: 16),
+                      Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error, size: 16),
                       const SizedBox(width: 4),
                       Text(
                         _error!,
-                        style: textTheme.bodySmall?.copyWith(color: colorScheme.error),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
                       ),
                     ],
                   ),
@@ -98,7 +96,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Text(
                     _success!,
-                    style: textTheme.bodyMedium?.copyWith(color: Colors.green),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).primaryColor),
                     textAlign: TextAlign.center,
                   ),
                 ),

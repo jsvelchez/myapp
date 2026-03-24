@@ -39,11 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           'Splitzy',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          style: Theme.of(context).textTheme.headlineLarge,
                         ),
                         const SizedBox(height: 12),
                         Text(
@@ -81,27 +77,39 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                         ),
-                        if (_isSignUp)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: TextFormField(
-                              controller: _confirmPasswordController,
-                              obscureText: true,
-                              decoration: const InputDecoration(
-                                labelText: 'Confirm Password',
-                                prefixIcon: Icon(Icons.lock_outline),
-                              ),
-                              validator: (value) {
-                                if (_isSignUp &&
-                                    (value == null ||
-                                        value.isEmpty ||
-                                        value != _passwordController.text)) {
-                                  return 'Passwords do not match';
-                                }
-                                return null;
-                              },
-                            ),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                          height: _isSignUp ? 95 : 0,
+                          child: AnimatedOpacity(
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
+                            opacity: _isSignUp ? 1 : 0,
+                            child: _isSignUp
+                                ? Padding(
+                                    padding: const EdgeInsets.only(top: 16.0),
+                                    child: TextFormField(
+                                      controller: _confirmPasswordController,
+                                      obscureText: true,
+                                      decoration: const InputDecoration(
+                                        labelText: 'Confirm Password',
+                                        prefixIcon: Icon(Icons.lock_outline),
+                                      ),
+                                      validator: (value) {
+                                        if (_isSignUp &&
+                                            (value == null ||
+                                                value.isEmpty ||
+                                                value !=
+                                                    _passwordController.text)) {
+                                          return 'Passwords do not match';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  )
+                                : null,
                           ),
+                        ),
                         const SizedBox(height: 24),
                         ElevatedButton(
                           onPressed: () {
@@ -116,7 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             const Expanded(child: Divider()),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Text(
                                 'or',
                                 style: Theme.of(context).textTheme.bodyMedium,
@@ -146,34 +155,42 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgotPasswordScreen()),
                                 );
                               },
-                              child: Text(
+                              child: const Text(
                                 'Forgot password?',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Colors.grey,
-                                      decoration: TextDecoration.underline,
-                                      fontWeight: FontWeight.bold,
-                                    ),
                               ),
                             ),
                           ],
                         ),
-                        const Spacer(),
-                        const SizedBox(height: 8),
                         TextButton(
                           onPressed: () {
                             setState(() {
                               _isSignUp = !_isSignUp;
                             });
                           },
-                          child: Text(
-                            _isSignUp
-                                ? 'Already have an account? Sign In'
-                                : "Don't have an account? Sign Up",
+                          child: Text.rich(
+                            TextSpan(
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: _isSignUp
+                                        ? 'Already have an account? '
+                                        : "Don't have an account? ",
+                                    style: const TextStyle(color: Colors.grey)),
+                                TextSpan(
+                                    text: _isSignUp ? 'Sign In' : 'Sign Up',
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
                           ),
                         ),
+                        const Spacer(),
                         const SizedBox(height: 16),
                         Text(
                           'By continuing, you agree to our Terms & Privacy Policy',

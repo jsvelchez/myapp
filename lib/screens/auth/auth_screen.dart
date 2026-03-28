@@ -160,8 +160,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           const ForgotPasswordScreen()),
                                 );
                               },
-                              child: const Text(
+                              child: Text(
                                 'Forgot password?',
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],

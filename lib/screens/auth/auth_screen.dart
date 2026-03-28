@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:myapp/screens/home_screen.dart';
 import 'forgot_password_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,6 +17,80 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  bool _loading = false;
+  String? _error;
+  bool _isPasswordObscured = true;
+  bool _isConfirmPasswordObscured = true;
+
+  Future<void> _login() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _loading = true;
+        _error = null;
+      });
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
+      } on FirebaseAuthException catch (e) {
+        if (mounted) {
+          setState(() {
+            if (e.code == 'user-not-found') {
+              _error = 'No user found for that email.';
+            } else {
+              _error = e.message;
+            }
+          });
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            _loading = false;
+          });
+        }
+      }
+    }
+  }
+
+  Future<void> _signUp() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _loading = true;
+        _error = null;
+      });
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
+      } on FirebaseAuthException catch (e) {
+        if (mounted) {
+          setState(() {
+            _error = e.message;
+          });
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            _loading = false;
+          });
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +140,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 16),
                         TextFormField(
                           controller: _passwordController,
-                          obscureText: true,
-                          decoration: const InputDecoration(
+                          obscureText: _isPasswordObscured,
+                          decoration: InputDecoration(
                             labelText: 'Password',
-                            prefixIcon: Icon(Icons.lock_outline),
-                            suffixIcon: Icon(Icons.visibility_off),
+                            prefixIcon: const Icon(Icons.lock_outline),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordObscured = !_isPasswordObscured;
+                                });
+                              },
+                            ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -90,10 +175,20 @@ class _LoginScreenState extends State<LoginScreen> {
                                     padding: const EdgeInsets.only(top: 16.0),
                                     child: TextFormField(
                                       controller: _confirmPasswordController,
-                                      obscureText: true,
-                                      decoration: const InputDecoration(
+                                      obscureText: _isConfirmPasswordObscured,
+                                      decoration: InputDecoration(
                                         labelText: 'Confirm Password',
-                                        prefixIcon: Icon(Icons.lock_outline),
+                                        prefixIcon: const Icon(Icons.lock_outline),
+                                        suffixIcon: IconButton(
+                                          icon: Icon(
+                                            _isConfirmPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              _isConfirmPasswordObscured = !_isConfirmPasswordObscured;
+                                            });
+                                          },
+                                        ),
                                       ),
                                       validator: (value) {
                                         if (_isSignUp &&
@@ -110,14 +205,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 : null,
                           ),
                         ),
+                        if (_error != null)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: Text(
+                              _error!,
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.error),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         const SizedBox(height: 24),
                         ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              // Handle login or signup
-                            }
-                          },
-                          child: Text(_isSignUp ? 'Sign Up' : 'Continue'),
+                          onPressed: _loading ? null : (_isSignUp ? _signUp : _login),
+                          child: _loading 
+                              ? const CircularProgressIndicator(color: Colors.white) 
+                              : Text(_isSignUp ? 'Sign Up' : 'Continue'),
                         ),
                         const SizedBox(height: 16),
                         Row(
